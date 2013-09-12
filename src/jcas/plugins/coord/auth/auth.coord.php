@@ -13,12 +13,14 @@ require(JELIX_LIB_PATH.'auth/jAuth.class.php');
 require(JELIX_LIB_PATH.'auth/jAuthDummyUser.class.php');
 
 /**
-* @package    jelix
-* @subpackage coord_plugin
+* the plugin for the coordinator, that checks authentication at each page call
 */
 class AuthCoordPlugin implements jICoordPlugin {
     public $config;
 
+    /**
+     * TODO: support lang
+     */
     function __construct($conf){
         $this->config = $conf;
 
@@ -61,51 +63,57 @@ class AuthCoordPlugin implements jICoordPlugin {
         }else{
             $notLogged = ! jAuth::isConnected();
         }
-
-        // Handle SAML logout requests that emanate from the CAS host exclusively.
-        if (isset($this->config['cas']['real_hosts']))
-            phpCAS::handleLogoutRequests(true, $this->config['cas']['real_hosts']);
         
-        // Force CAS authentication on any page that includes this file
-        
+        try {
 
-        
-        $needAuth = isset($params['auth.required']) ? ($params['auth.required']==true):$this->config['auth_required'];
-        $authok = false;
+            // Handle SAML logout requests that emanate from the CAS host exclusively.
+            if (isset($this->config['cas']['real_hosts']))
+                phpCAS::handleLogoutRequests(true, $this->config['cas']['real_hosts']);
 
-        if ($needAuth && $notLogged) {
-            if (jApp::coord()->request->isAjax()) {
-                throw new jException($this->config['error_message']);
+            $needAuth = isset($params['auth.required']) ? ($params['auth.required']==true):$this->config['auth_required'];
+            $authok = false;
+            if ($needAuth) {
+                // if this is an ajax request, we don't want redirection to a web page
+                // so we shouldn't force authentication if we are not logged
+                if ($notLogged && jApp::coord()->request->isAjax()) {
+                    throw new jException($this->config['error_message']);
+                }
+
+                // force authentication
+                phpCAS::forceAuthentication();
+
+                // if we are here, this is because we are authenticated.
+                $authok = true;
+
+                if ($notLogged) {
+                    // we didn't not authenticated at the jelix layer
+                    $login = phpCAS::getUser();
+
+                    // first try to get the user from the database
+                    $user = jAuth::getUser($login);
+                    // the user doesn't exist: let's create it
+                    if (!$user) {
+                        $user = jAuth::createUserObject($login, '');
+                        jEvent::notify ('CASNewUser', array('user'=>$user));
+                        jAuth::saveNewUser($user);
+                    }
+                    // do login with jAuth
+                    // it may fails if a module forbid the given user for example
+                    $authok = jAuth::login($login,'');
+                }
+            }
+            else {
+                $authok= true;
             }
 
-            // force authentication
-            phpCAS::forceAuthentication();
-            // set $authok with what we find in phpCAS session values
-//FIXME
-
-        }
-        elseif (!$notLogged && $needAuth) {
-            // we are logged, at least at the jelix layer.
-            
-            // force CAS authentication to be sure we are still authenticated
-            // set $authok with what we find in phpCAS session values
-            phpCAS::forceAuthentication();
-
-//FIXME
-
-            if (jApp::coord()->request->isAjax()) {
-                throw new jException($this->config['error_message']);
+            if (!$authok) {
+                // call the page that says that we are not authenticated
+                $selector= new jSelectorAct($this->config['on_error_action']);
             }
-
-            //phpCAS::getUser();
-            $authok= true;
         }
-
-        if (!$authok) {
-            // call the page that says that we are not authenticated
+        catch(Exception $error) {
             $selector= new jSelectorAct($this->config['on_error_action']);
         }
-        
         
         return $selector;
     }
