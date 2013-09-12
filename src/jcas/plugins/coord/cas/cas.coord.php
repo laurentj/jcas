@@ -15,7 +15,7 @@ require(JELIX_LIB_PATH.'auth/jAuthDummyUser.class.php');
 /**
 * the plugin for the coordinator, that checks authentication at each page call
 */
-class AuthCoordPlugin implements jICoordPlugin {
+class casCoordPlugin implements jICoordPlugin {
     public $config;
 
     /**
