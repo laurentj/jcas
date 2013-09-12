@@ -2,14 +2,17 @@
 This module needs Jelix 1.4.5 minimum
 
 - copy the jcas directory into your application
-- copy the configuration file jcas/plugins/coord/auth/auth.coord.ini.php.dist
-  into your application var/config/auth.coord.ini.php
-- in the configuration of your application, declare the auth plugin for the coordinator
+- copy the configuration file jcas/plugins/coord/cas/cas.coord.ini.php.dist
+  into your application var/config/cas.coord.ini.php
+- in the configuration of your application, declare the cas plugin for the coordinator
 
     [coordplugins]
-    auth = auth.coord.ini.php
+    cas = cas.coord.ini.php
+    cas.name = auth
 
-- configure the file var/config/auth.coord.ini.php
+    Important: you should remove the "auth" plugin from this section!
+
+- configure the file var/config/cas.coord.ini.php
 
 - deactivate following rights in jAcl2,  for ALL groups and ALL users:
     - auth.user.change.password "The user can change his password"
