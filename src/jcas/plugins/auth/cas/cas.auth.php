@@ -1,7 +1,5 @@
 <?php
 /**
-* @package    jelix
-* @subpackage auth_driver
 * @author     Laurent Jouanneau
 * @copyright  2005-2013 Laurent Jouanneau
 * @licence  http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public Licence, see LICENCE file
