@@ -1,24 +1,32 @@
 
 This module needs Jelix 1.4.5 minimum
 
+- deinstall modules jauth and jauthdb
 - copy the jcas directory into your application
-- copy the configuration file jcas/plugins/coord/cas/cas.coord.ini.php.dist
-  into your application var/config/cas.coord.ini.php
-- in the configuration of your application, declare the cas plugin for the coordinator
-
-    [coordplugins]
-    cas = cas.coord.ini.php
-    cas.name = auth
-
-    Important: you should remove the "auth" plugin from this section!
-
+- run php cmd.php installmodule jcas
 - configure the file var/config/cas.coord.ini.php
+
+If you don't execute Jelix's installer, here is you should do:
+
+- copy the configuration file jcas/install/cas.coord.ini.php into your application var/config/
+- in the configuration of your application:
+
+   1) declare the cas plugin for the coordinator
+
+        [coordplugins]
+        cas = cas.coord.ini.php
+        cas.name = auth
+
+        Important: you should remove the "auth" plugin from this section!
+
+   2) deactivate jauth and jauthdb modules from the "modules" section
 
 - deactivate following rights in jAcl2,  for ALL groups and ALL users:
     - auth.user.change.password "The user can change his password"
     - auth.users.change.password "Change the password of a user"
     - auth.users.create "Create a new user"
     - auth.users.delete "Delete a user"
-
+ In fact, you have to deactivate all features in your application which allow to modify
+ or set a password: this is useless with CAS.
 
 
