@@ -37,7 +37,7 @@ class casCoordPlugin implements jICoordPlugin {
                 $version = SAML_VERSION_1_1; break;
         }
 
-        phpCAS::client($version, $casConf['host'], $casConf['port'], $casConf['context']);
+        phpCAS::client($version, $casConf['host'], intval($casConf['port']), $casConf['context']);
 
         if ($casConf['server_ca_cert_path']) {
             $realPath = str_replace(array('app:','lib:','var:', 'www:'),
