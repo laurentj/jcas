@@ -12,8 +12,8 @@ class jcasCtrl extends jController {
     );
 
     function logout() {
+        jAuth::logout();
         phpCAS::logout();
-
         return $this->notauthenticated();
     }
 
