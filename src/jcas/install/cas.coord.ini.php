@@ -49,26 +49,28 @@ form = ""
 uploadsDirectory= ""
 
 
-# Full Hostname of your CAS Server
+; Full Hostname of your CAS Server
 host = cas.example.com
 
-# Context of the CAS Server
+; Context of the CAS Server
 context = "/cas"
 
-# Port of your CAS server. Normally for a https server it's 443
+; Port of your CAS server. Normally for a https server it's 443
 port = 443;
 
-# Path to the ca chain that issued the cas server certificate
+; Path to the ca chain that issued the cas server certificate
 server_ca_cert_path = "/path/to/cachain.pem"
 
 
-# The "real" hosts of clustered cas server that send SAML logout messages
-# Assumes the cas server is load balanced across multiple hosts
-#real_hosts[] = cas-real-1.example.com
-#real_hosts[] = cas-real-2.example.com
+; The "real" hosts of clustered cas server that send SAML logout messages
+; Assumes the cas server is load balanced across multiple hosts
+;real_hosts[] = cas-real-1.example.com
+;real_hosts[] = cas-real-2.example.com
 
-# CAS client nodes for rebroadcasting pgtIou/pgtId and logoutRequest
-#rebroadcast_nodes[] = "http://cas-client-1.example.com"
-#rebroadcast_nodes[] = "http://cas-client-2.example.com"
+; CAS client nodes for rebroadcasting pgtIou/pgtId and logoutRequest
+;rebroadcast_nodes[] = "http://cas-client-1.example.com"
+;rebroadcast_nodes[] = "http://cas-client-2.example.com"
 
-
+; a file to log phpCAS traces (do not activate in production!!!)
+; ex: "var:log/phpcas.log"
+debug_log=
