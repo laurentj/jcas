@@ -102,13 +102,22 @@ class casCoordPlugin implements jICoordPlugin {
                     $user = jAuth::getUser($login);
                     // the user doesn't exist: let's create it
                     if (!$user) {
-                        $user = jAuth::createUserObject($login, '');
-                        jEvent::notify ('CASNewUser', array('user'=>$user));
-                        jAuth::saveNewUser($user);
+                        if ($this->config['cas']['automatic_registering']) {
+                            $user = jAuth::createUserObject($login, '');
+                            jEvent::notify ('CASNewUser', array('user'=>$user));
+                            jAuth::saveNewUser($user);
+                            // do login with jAuth
+                            // it may fails if a module forbid the given user for example
+                            $authok = jAuth::login($login,'');
+                        }
+                        else
+                            $authok = false;
                     }
-                    // do login with jAuth
-                    // it may fails if a module forbid the given user for example
-                    $authok = jAuth::login($login,'');
+                    else {
+                        // do login with jAuth
+                        // it may fails if a module forbid the given user for example
+                        $authok = jAuth::login($login,'');
+                    }
                 }
             }
             else {

@@ -1,3 +1,3 @@
 <p>
-    You are not authenticated.
+    Sorry, you cannot use this application: you are not authenticated or you are not authorized to use this application.
 </p>

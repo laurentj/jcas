@@ -40,6 +40,8 @@ dao = "jauthdb~jelixuser"
 ; profile to use for jDb 
 profile = ""
 
+; value "on": create the user in the database if it doesn't exist when the user is authenticated
+automatic_registering=
 
 ; name of the form for the jauthdb_admin module
 form = ""
