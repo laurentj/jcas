@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module xmlns="http://jelix.org/ns/module/1.0">
     <info id="jcas@modules.jelix.org" name="jcas" createdate="2013-09-09">
-        <version date="2013-09-09">0.1</version>
+        <version date="2013-09-29">0.2</version>
         <label lang="en_US">module to authenticate with a CAS server</label>
         <description lang="en_US"></description>
         <license URL="http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html">LGPL 2.1</license>
