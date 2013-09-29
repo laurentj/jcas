@@ -1,10 +1,14 @@
 
 This module needs Jelix 1.4.5 minimum
 
-- deinstall modules jauth and jauthdb
+- deinstall module jauth
+- activate module jauthdb
 - copy the jcas directory into your application
 - run php cmd.php installmodule jcas
 - configure the file var/config/cas.coord.ini.php
+- if some modules use jauth, you should change them. For exemple:
+    - master_admin: you should provide your own template in your var/theme, to replace zone_admin_infobox.tpl
+
 
 If you don't execute Jelix's installer, here is you should do:
 
@@ -19,7 +23,7 @@ If you don't execute Jelix's installer, here is you should do:
 
         Important: you should remove the "auth" plugin from this section!
 
-   2) deactivate jauth and jauthdb modules from the "modules" section
+   2) deactivate the jauth module from the "modules" section
 
 - deactivate following rights in jAcl2,  for ALL groups and ALL users:
     - auth.user.change.password "The user can change his password"
