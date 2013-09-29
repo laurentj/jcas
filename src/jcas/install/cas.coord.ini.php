@@ -74,3 +74,6 @@ server_ca_cert_path = "/path/to/cachain.pem"
 ; a file to log phpCAS traces (do not activate in production!!!)
 ; ex: "var:log/phpcas.log"
 debug_log=
+
+; on: disable certificat validation (do not use in production!!!)
+disable_validation=

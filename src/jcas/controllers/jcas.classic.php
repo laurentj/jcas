@@ -7,6 +7,10 @@
 
 class jcasCtrl extends jController {
 
+    public $pluginParams = array(
+        '*' => array('auth.required'=>false)
+    );
+
     function logout() {
         phpCAS::logout();
 
