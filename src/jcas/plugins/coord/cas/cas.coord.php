@@ -39,8 +39,12 @@ class casCoordPlugin implements jICoordPlugin {
 
         phpCAS::client($version, $casConf['host'], $casConf['port'], $casConf['context']);
 
-        if ($casConf['server_ca_cert_path'])
-            phpCAS::setCasServerCACert($casConf['server_ca_cert_path']);
+        if ($casConf['server_ca_cert_path']) {
+            $realPath = str_replace(array('app:','lib:','var:', 'www:'),
+                                    array(jApp::appPath(), LIB_PATH, jApp::varPath(), jApp::wwwPath()),
+                                    $casConf['server_ca_cert_path']);
+            phpCAS::setCasServerCACert($realPath);
+        }
 
         if (isset($casConf['disable_validation']) && $casConf['disable_validation'])
             phpCAS::setNoCasServerValidation();
