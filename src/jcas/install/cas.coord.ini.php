@@ -22,10 +22,10 @@ auth_required = on
 on_error = 2
 
 ; locale key for the error message when on_error=1
-error_message = "jcas~autherror.notlogged"
+error_message = "jcas~auth.notlogged"
 
 ; action to execute on a missing authentification when on_error=2
-on_error_action = "cas~default:notauthenticated"
+on_error_action = "jcas~jcas:notauthenticated"
 
 
 ;------- parameters for the "cas" driver

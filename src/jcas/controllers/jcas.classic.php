@@ -5,7 +5,7 @@
 * @licence  http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public Licence, see LICENCE file
 */
 
-class defaultCtrl extends jController {
+class jcasCtrl extends jController {
 
     function logout() {
         phpCAS::logout();
