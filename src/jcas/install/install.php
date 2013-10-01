@@ -50,6 +50,8 @@ class jcasModuleInstaller extends jInstallerModule {
                 $cn = $this->dbConnection();
                 $cn->exec("INSERT INTO ".$cn->prefixTable('jlx_user')." (usr_login, usr_password, usr_email ) VALUES
                             (".$cn->quote($login).", '' , ".$cn->quote($email).")");
+                jAcl2DbUserGroup::createUser($login);
+                jAcl2DbUserGroup::addUserToGroup($login, 'admins');
             }
         }
 
