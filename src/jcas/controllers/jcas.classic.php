@@ -18,9 +18,11 @@ class jcasCtrl extends jController {
     }
 
     function notauthenticated() {
-        $rep = $this->getResponse('html');
+        $rep = $this->getResponse('htmlauth');
         $rep->title = 'Not authenticated';
         $tpl = new jTpl();
+        $plugin = jApp::coord()->getPlugin('auth');
+        $tpl->assign('error', $plugin->errorMessage);
         $rep->body->assign('MAIN',$tpl->fetch('notauthenticated'));
         return $rep;
     }

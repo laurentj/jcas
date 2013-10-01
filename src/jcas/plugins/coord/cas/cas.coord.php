@@ -15,7 +15,7 @@ require(JELIX_LIB_PATH.'auth/jAuthDummyUser.class.php');
 */
 class casCoordPlugin implements jICoordPlugin {
     public $config;
-
+    public $errorMessage = '';
     /**
      * TODO: support lang
      */
@@ -45,6 +45,8 @@ class casCoordPlugin implements jICoordPlugin {
         }
 
         phpCAS::client($version, $casConf['host'], intval($casConf['port']), $casConf['context']);
+        phpCAS::setHTMLheader('<div id="cas-error"><h2>__TITLE__</h2>');
+        phpCAS::setHTMLFooter('</div>');
 
         if ($casConf['server_ca_cert_path']) {
             $realPath = str_replace(array('app:','lib:','var:', 'www:'),
@@ -74,6 +76,7 @@ class casCoordPlugin implements jICoordPlugin {
         }
         
         try {
+            ob_start(); // we want to intercept error displayed by phpCAS :-/
 
             // Handle SAML logout requests that emanate from the CAS host exclusively.
             if (isset($this->config['cas']['real_hosts']))
@@ -128,8 +131,10 @@ class casCoordPlugin implements jICoordPlugin {
                 // call the page that says that we are not authenticated
                 $selector= new jSelectorAct($this->config['on_error_action']);
             }
+            ob_end_clean();
         }
         catch(Exception $error) {
+            $this->errorMessage = ob_get_clean();
             $selector= new jSelectorAct($this->config['on_error_action']);
         }
         
