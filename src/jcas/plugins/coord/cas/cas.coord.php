@@ -83,7 +83,7 @@ class casCoordPlugin implements jICoordPlugin {
                 phpCAS::handleLogoutRequests(true, $this->config['cas']['real_hosts']);
 
             $needAuth = isset($params['auth.required']) ? ($params['auth.required']==true):$this->config['auth_required'];
-            $authok = false;
+
             if ($needAuth) {
                 // if this is an ajax request, we don't want redirection to a web page
                 // so we shouldn't force authentication if we are not logged
@@ -91,30 +91,30 @@ class casCoordPlugin implements jICoordPlugin {
                     throw new jException($this->config['error_message']);
                 }
 
+                $authok = false;
                 // force authentication
                 phpCAS::forceAuthentication();
 
-                // if we are here, this is because we are authenticated.
-                $authok = true;
-
+                // if we are here, this is because we are authenticated with the CAS server
                 if ($notLogged) {
                     // we didn't not authenticated at the jelix layer
                     $login = phpCAS::getUser();
-
                     // first try to get the user from the database
                     $user = jAuth::getUser($login);
                     // the user doesn't exist: let's create it
                     if (!$user) {
                         if ($this->config['cas']['automatic_registering']) {
                             $user = jAuth::createUserObject($login, '');
+                            $user->email = '';
                             jEvent::notify ('CASNewUser', array('user'=>$user));
                             jAuth::saveNewUser($user);
                             // do login with jAuth
                             // it may fails if a module forbid the given user for example
                             $authok = jAuth::login($login,'');
                         }
-                        else
+                        else {
                             $authok = false;
+                        }
                     }
                     else {
                         // do login with jAuth
@@ -122,19 +122,19 @@ class casCoordPlugin implements jICoordPlugin {
                         $authok = jAuth::login($login,'');
                     }
                 }
-            }
-            else {
-                $authok= true;
+                else
+                    $authok = true;
+
+                if (!$authok) {
+                    // call the page that says that we are not authenticated
+                    $selector = new jSelectorAct($this->config['on_error_action']);
+                }
             }
 
-            if (!$authok) {
-                // call the page that says that we are not authenticated
-                $selector= new jSelectorAct($this->config['on_error_action']);
-            }
-            ob_end_clean();
+            ob_end_clean(); // erase traces made by phpCas
         }
-        catch(Exception $error) {
-            $this->errorMessage = ob_get_clean();
+        catch(CAS_Exception $error) {
+            $this->errorMessage = ob_get_clean(); // retrieve phpCas HTML output
             $selector= new jSelectorAct($this->config['on_error_action']);
         }
         
