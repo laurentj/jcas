@@ -790,7 +790,7 @@ class CAS_Client
         // skip Session Handling for logout requests and if don't want it'
         if (session_id()=="" && !$this->_isLogoutRequest()) {
             phpCAS :: trace("Starting a new session");
-            session_start();
+            //session_start();
         }
 
         // are we in proxy mode ?
