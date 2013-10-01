@@ -40,5 +40,18 @@ class jcasModuleInstaller extends jInstallerModule {
                 }
             }
         }
+        $authconfig =  new jIniFileModifier(jApp::configPath('cas.coord.ini.php'));
+        $daoName = $authconfig->getValue('dao', 'cas');
+        if ($daoName == 'jauthdb~jelixuser' && $this->firstDbExec()) {
+            $this->execSQLScript('install_jauth.schema', 'jauthdb');
+            $login = $this->getParameter('useradmin');
+            $email =  $this->getParameter('emailadmin');
+            if ($login) {
+                $cn = $this->dbConnection();
+                $cn->exec("INSERT INTO ".$cn->prefixTable('jlx_user')." (usr_login, usr_password, usr_email ) VALUES
+                            (".$cn->quote($login).", '' , ".$cn->quote($email).")");
+            }
+        }
+
     }
 }

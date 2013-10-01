@@ -10,5 +10,6 @@
     </info>
     <dependencies>
         <jelix minversion="1.4.5" maxversion="1.5.*"/>
+        <module name="jauthdb" />
     </dependencies>
 </module>

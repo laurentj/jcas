@@ -1,0 +1,4 @@
+<?php
+
+$locales = array(
+);
