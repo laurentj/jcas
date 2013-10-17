@@ -34,6 +34,9 @@ on_error_action = "jcas~jcas:notauthenticated"
 ; server version. CAS_1.0, CAS_2.0, SAML_1.1
 server_version= "SAML_1.1"
 
+; indicate it is compatible with the Db driver, for jauthdb_admin
+compatiblewithdb = on
+
 ; name of the dao to get user data
 dao = "jauthdb~jelixuser"
 
@@ -44,7 +47,7 @@ profile = ""
 automatic_registering=
 
 ; name of the form for the jauthdb_admin module
-form = ""
+form = "jauthdb_admin~jelixuser"
 
 ; path of the directory where to store files uploaded by the form (jauthdb_admin module)
 ; should be related to the var directory of the application
