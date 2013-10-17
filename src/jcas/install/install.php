@@ -35,8 +35,8 @@ class jcasModuleInstaller extends jInstallerModule {
                     $id = $group->id_aclgrp;
                     jAcl2DbManager::removeRight($id, 'auth.user.change.password', '-', true);
                     jAcl2DbManager::removeRight($id, 'auth.users.change.password', '-', true);
-                    jAcl2DbManager::removeRight($id, 'auth.users.create', '-', true);
-                    jAcl2DbManager::removeRight($id, 'auth.users.delete', '-', true);
+                    //jAcl2DbManager::removeRight($id, 'auth.users.create', '-', true);
+                    //jAcl2DbManager::removeRight($id, 'auth.users.delete', '-', true);
                 }
             }
         }
